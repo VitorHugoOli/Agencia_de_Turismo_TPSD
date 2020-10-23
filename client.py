@@ -1,51 +1,56 @@
+import asyncio
+import pickle
 import socket
-import select
+import sys
+
 import errno
 
-HEADER_LENGTH = 10
 
-IP = "127.0.0.1"
-PORT = 1113
+class EasySocketClient:
+    HEADER_LENGTH = 10
 
-my_username = input("Username:")
-client_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
-client_socket.connect((IP,PORT))
+    IP = "127.0.0.1"
+    PORT = 1234
 
-client_socket.setblocking(False)
+    client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-username = my_username.encode('utf-8')
+    client_socket.connect((IP, PORT))
 
-username_header = f"{len(username):<{HEADER_LENGTH}}".encode('utf-8')
-client_socket.send(username_header + username)
+    client_socket.setblocking(False)
 
-while True:
-    message = input(f"{my_username} > ")
-    if message:
-        message = message.encode('utf-8')
-        message_header = f"{len(message) :< {HEADER_LENGTH}}".encode('utf-8')
-        client_socket.send(message_header + message)
+    async def send(self, data):
+        body = pickle.dumps(data)
+        body_header = f"{len(body):<{self.HEADER_LENGTH}}".encode('utf-8')
+        self.client_socket.send(body_header + body)
 
-    try:
         while True:
-            #recebendo coisas    
-            username_header = client_socket.recv(HEADER_LENGTH)
-            if not len(username_header):
-                print("conexao fechada")
+            try:
+                message_header = self.client_socket.recv(self.HEADER_LENGTH)
+                message_length = int(message_header.decode('utf-8').strip())
+                mens = pickle.loads(self.client_socket.recv(message_length))
+                return mens
+
+            except IOError as e:
+                if e.errno != errno.EAGAIN and e.errno != errno.EWOULDBLOCK:
+                    print('Reading error: {}'.format(str(e)))
+                    sys.exit()
+
+            except Exception as e:
+                print('Reading error: '.format(str(e)))
                 sys.exit()
-            username_length = int(username_length.decode('utf-8').strip())
-            username = client_socket.recv(username_length).decode('utf-8')
 
-            message_header = client_socket.recv(HEADER_LENGTH)
-            message_length = int(message_header.decode('utf-8').strip())
-            message = client_socket.recv(message_length).decode('utf-8')
+    def close(self):
+        self.client_socket.close()
 
-            print(f"{username} > {message}")
-    except IOError as e:
-        if e.errno != errno.EAGAIN or e.errno != errno.EWOULDBLOCK:
-            print('Lendo erro', str(e))
-            sys.exit()
-        continue    
 
-    except Exception as e:
-        print("Erro",str(e))
-        sys.exit()            
+async def main():
+    client = EasySocketClient()
+
+    while True:
+        message = input(f'Client > ')
+        data = await client.send(message)
+        print(data)
+    # client.close()
+
+
+asyncio.run(main())
