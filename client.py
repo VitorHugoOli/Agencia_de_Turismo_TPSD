@@ -48,7 +48,10 @@ async def main():
 
     while True:
         message = input(f'Client > ')
-        data = await client.send(message)
+        data = await client.send({'action': 'passagem', 'data': {'diaIda': '07/03/2020', 'paraAeroporto': 'Aeroporto de Palmas Brigadeiro Lysias Rodrigues - Palmas (TO)',
+                                                                'diaVolta': '09/03/2020',
+                                                                'numeroDePassagens': 3
+                                                                }})
         print(data)
     # client.close()
 
