@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+        integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous" />
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/style.css')}}"/>    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Passagens aéreas</title>
+</head>
+
+<body>
+    <h1>Compre suas passagens aéreas.</h1>
+            <h2>Saída do Aeroporto Internacional de Confins - Tancredo Neves </h2>
+            <div class="container logo">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <img src="{{ url_for('static', filename='aviao.jpg')}}" alt="aviao" class="logo" />
+                    </div>
+                </div>
+            </div>
+            <form id="formulariopassagens" name="formulariopassagens" method="POST" action="." >
+                <div class="container">
+                    <div class="row align-items-center">
+
+                        <div class="col-md-3">
+                            <p>Passagem de avião:</p>
+                        </div>
+                        <div class="col-md-9">
+                            <select name="aeroporto" class="selecionar" id="aeroporto">
+                                <option value="Aeroporto de Altamira - Altamira (PA)" class="selecionar">Aeroporto de
+                                    Altamira - Altamira (PA)</option>
+                                <option value="Aeroporto do Paraná - Bacacheri (PR)" class="selecionar">Aeroporto do
+                                    Paraná - Bacacheri (PR)</option>
+                                <option value="Aeroporto Internacional de Bagé Comandante Gustavo
+                                Kraemer - Bagé (RS)" class="selecionar">Aeroporto Internacional de Bagé Comandante
+                                    Gustavo
+                                    Kraemer - Bagé (RS)</option>
+                                <option value="Aeroporto Internacional de Boa vista Atlas Brasil
+                                Cantanhede- Boa Vista (RR)" class="selecionar">Aeroporto Internacional de Boa vista
+                                    Atlas Brasil
+                                    Cantanhede- Boa Vista (RR)</option>
+                                <option value="Aeroporto Internacional de Campo Grande - Campo
+                                Grande (MS)" class="selecionar">Aeroporto Internacional de Campo Grande - Campo
+                                    Grande (MS)</option>
+                                <option value=">Aeroporto Internacional Cruzeiro do Sul - Cruzeiro
+                                    do Sul (AC)" class="selecionar">Aeroporto Internacional Cruzeiro do Sul - Cruzeiro
+                                    do Sul (AC)</option>
+                                <option value="Aeroporto de Goiânia Santa Genoveva - Goiânia (GO)" class="selecionar">
+                                    Aeroporto de Goiânia Santa Genoveva - Goiânia (GO)
+                                </option>
+                                <option value=">Aeroporto de Imperatriz Prefeito Renato Moreira -
+                                    Imperatriz (MA)" class="selecionar">Aeroporto de Imperatriz Prefeito Renato Moreira
+                                    -
+                                    Imperatriz (MA)</option>
+                                <option value="Aeroporto de Joinville Lauro Carneiro de Loyola -
+                                Joinville (SC)" class="selecionar">Aeroporto de Joinville Lauro Carneiro de Loyola -
+                                    Joinville (SC)</option>
+                                <option value="Aeroporto Internacional de Macapá Alberto Alcolumbre
+                                - Macapá (AP)" class="selecionar">Aeroporto Internacional de Macapá Alberto Alcolumbre
+                                    - Macapá (AP)</option>
+                                <option value="Aeroporto de Palmas Brigadeiro Lysias Rodrigues -
+                                Palmas (TO)" class="selecionar">Aeroporto de Palmas Brigadeiro Lysias Rodrigues -
+                                    Palmas (TO)</option>
+                            </select>
+                        </div>
+
+                    </div>
+                    <div class="row align-items-center">
+
+                        <div class="col-md-3">
+                            <p>Dia da ida:</p>
+                        </div>
+
+                        <div class="col-md-9">
+                            <input type="date" name="dataida" id="dataida" class="selecionar">
+                        </div>
+                    </div>
+                    <div class="row align-items-center">
+                        <div class="col-md-3">
+                            <p>Dia da volta:</p>
+                        </div>
+                        <div class="col-md-9">
+                            <input type="date" name="datavolta" id="datavolta" class="selecionar">
+                        </div>
+
+                    </div>
+                    <div class="row align-items-center">
+
+                        <div class="col-md-3">
+                            <p>Número de passagens:</p>
+                        </div>
+                        <div class="col-md-9">
+                            <input type="number" name="npassagens" id="npassagens" class="selecionar">
+                        </div>
+
+                    </div>
+
+
+                    <h1>Compre sua hospedagem.</h1>
+                      <div class="container logo">
+                          <div class="row align-items-center">
+                              <div class="col">
+                                  <img src="{{ url_for('static', filename='hotel.jpg')}}" alt="hotel" class="logo" />
+                              </div>
+                          </div>
+                      </div>
+                      <div class="row align-items-center">
+
+                        <div class="col-md-3">
+                            <p>Cidades:</p>
+                        </div>
+                        <div class="col-md-9">
+                            <select name="cidades" class="selecionar">
+                                <option value="Altamira - PA" class="selecionar">Altamira (PA)</option>
+                                <option value="Bacacheri (PR)" class="selecionar">Bacacheri (PR)</option>
+                                <option value="Bagé (RS)" class="selecionar">Bagé (RS)</option>
+                                <option value="Boa Vista (RR)" class="selecionar">Boa Vista (RR)</option>
+                                <option value="Campo Grande (MS)" class="selecionar">Campo Grande (MS)</option>
+                                <option value=">Cruzeiro do Sul (AC)" class="selecionar">Cruzeiro do Sul (AC)</option>
+                                <option value="Goiânia (GO)" class="selecionar">Goiânia (GO) </option>
+                                <option value="Imperatriz (MA)" class="selecionar">Imperatriz (MA)</option>
+                                <option value="Joinville (SC)" class="selecionar">Joinville (SC)</option>
+                                <option value="Macapá (AP)" class="selecionar">Macapá (AP)</option>
+                                <option value="Palmas (TO)" class="selecionar">Palmas (TO)</option>
+                            </select>
+                        </div>
+
+                    </div>
+                    <div class="row align-items-center">
+
+                        <div class="col-md-3">
+                            <p>Dia da chegada:</p>
+                        </div>
+
+                        <div class="col-md-9">
+                            <input type="date" name="dataidahotel" id="dataidahotel" class="selecionar">
+                        </div>
+                    </div>
+                    <div class="row align-items-center">
+                        <div class="col-md-3">
+                            <p>Dia da saída:</p>
+                        </div>
+                        <div class="col-md-9">
+                            <input type="date" name="datavoltahotel" id="datavoltahotel" class="selecionar">
+                        </div>
+
+                    </div>
+                    <div class="row align-items-center">
+
+                        <div class="col-md-3">
+                            <p>Número de pessoas:</p>
+                        </div>
+                        <div class="col-md-9">
+                            <input type="number" name="npessoas" id="npessoas" class="selecionar">
+                        </div>
+
+                    </div>
+
+                    <h1>Passeios disponíveis.</h1>
+                      <div class="container logo">
+                          <div class="row align-items-center">
+                              <div class="col">
+                                  <img src="{{ url_for('static', filename='praca.jpg')}}" alt="praça com fonte de agua" class="logo" />
+                              </div>
+                          </div>
+                      </div>
+                      <div class="row align-items-center">
+
+                        <div class="col-md-3">
+                            <p>Cidades:</p>
+                        </div>
+                        <div class="col-md-9">
+                            <select name="cidadePasseio" class="selecionar" id="cidadePasseio">
+                                <option value="Altamira - PA" class="selecionar">Altamira (PA)</option>
+                                <option value="Bacacheri (PR)" class="selecionar">Bacacheri (PR)</option>
+                                <option value="Bagé (RS)" class="selecionar">Bagé (RS)</option>
+                                <option value="Boa Vista (RR)" class="selecionar">Boa Vista (RR)</option>
+                                <option value="Campo Grande (MS)" class="selecionar">Campo Grande (MS)</option>
+                                <option value=">Cruzeiro do Sul (AC)" class="selecionar">Cruzeiro do Sul (AC)</option>
+                                <option value="Goiânia (GO)" class="selecionar">Goiânia (GO) </option>
+                                <option value="Imperatriz (MA)" class="selecionar">Imperatriz (MA)</option>
+                                <option value="Joinville (SC)" class="selecionar">Joinville (SC)</option>
+                                <option value="Macapá (AP)" class="selecionar">Macapá (AP)</option>
+                                <option value="Palmas (TO)" class="selecionar">Palmas (TO)</option>
+                            </select>
+                        </div>
+
+                    </div>
+                    <div class="row align-items-center">
+
+                        <div class="col-md-3">
+                            <p>Dia da chegada:</p>
+                        </div>
+
+                        <div class="col-md-9">
+                            <input type="date" name="dataidaPasseio" id="dataidaPasseio" class="selecionar">
+                        </div>
+                    </div>
+
+                    <div class="col text-center">
+                        <input type="submit" value="Enviar" class="submit" >
+
+                    </div>
+                </div>
+
+            </form>
+
+
+           
+</body>
+
+</html>

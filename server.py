@@ -8,7 +8,7 @@ class EasySocketServer:
     HEADER_LENGTH = 10
 
     IP = "127.0.0.1"
-    PORT = 1234
+    PORT = 5000
     SERVER_SOCKET = None
     sockets_list = []
     clients = {}
@@ -90,7 +90,7 @@ class EasySocketServer:
         self.actualClient.send(message_header + message)
 
 
-async def main():
+async def mainServer():
     sock = EasySocketServer()
 
     while True:

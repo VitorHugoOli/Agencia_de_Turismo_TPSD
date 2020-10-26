@@ -10,7 +10,7 @@ class EasySocketClient:
     HEADER_LENGTH = 10
 
     IP = "127.0.0.1"
-    PORT = 1234
+    PORT = 5000
 
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
@@ -43,15 +43,12 @@ class EasySocketClient:
         self.client_socket.close()
 
 
-async def main():
+async def main(aeroporto):
     client = EasySocketClient()
 
     while True:
         message = input(f'Client > ')
-        data = await client.send({'action': 'passagem', 'data': {'diaIda': '07/03/2020', 'paraAeroporto': 'Aeroporto de Palmas Brigadeiro Lysias Rodrigues - Palmas (TO)',
-                                                                'diaVolta': '09/03/2020',
-                                                                'numeroDePassagens': 3
-                                                                }})
+        data = await client.send({'action': 'passagem', 'data': {aeroporto}})
         print(data)
     # client.close()
 
