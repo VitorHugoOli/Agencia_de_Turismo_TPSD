@@ -30,7 +30,7 @@ def index():
 
         print(f"Resposta {data}")
 
-        return redirect(url_for('hotel'))
+        return redirect(url_for('selectHotel'))
 
     return render_template('index.html')
 
@@ -59,13 +59,13 @@ def selectHotel():
 
         print(f"Resposta {data}")
 
-        return redirect(url_for('passeio'))
+        return redirect(url_for('selectPasseio'))
     return render_template('hotel.html')
 
 
 @app.route('/showHotel')
 def showHoteis():
-    return render_template('showAeros.html')
+    return render_template('showHoteis.html')
 
 
 @app.route('/passeio', methods=['POST', 'GET'])
@@ -88,8 +88,8 @@ def selectPasseio():
 
 
 @app.route('/showPasseio')
-def showHoteis():
-    return render_template('showAeros.html')
+def showPasseio():
+    return render_template('showPasseio.html')
 
 
 if __name__ == "__main__":
