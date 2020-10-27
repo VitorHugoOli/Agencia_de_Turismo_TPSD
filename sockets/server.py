@@ -2,15 +2,13 @@ import asyncio
 import pickle
 import select
 import socket
-import json
-import os
 
 
 class EasySocketServer:
     HEADER_LENGTH = 10
 
     IP = "127.0.0.1"
-    PORT = 1234
+    PORT = 5050
     SERVER_SOCKET = None
     sockets_list = []
     clients = {}
@@ -19,8 +17,7 @@ class EasySocketServer:
     def __init__(self):
         self.SERVER_SOCKET = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-        self.SERVER_SOCKET.setsockopt(
-            socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        self.SERVER_SOCKET.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
         self.SERVER_SOCKET.bind((self.IP, self.PORT))
 
@@ -47,8 +44,7 @@ class EasySocketServer:
 
     async def listen(self):
         while True:
-            read_sockets, _, exception_sockets = select.select(
-                self.sockets_list, [], self.sockets_list)
+            read_sockets, _, exception_sockets = select.select(self.sockets_list, [], self.sockets_list)
 
             for notified_socket in read_sockets:
 
@@ -63,8 +59,7 @@ class EasySocketServer:
                     self.sockets_list.append(client_socket)
                     self.clients[client_socket] = client_address
                     self.actualClient = client_socket
-                    print('Accepted new connection from {}:{}'.format(
-                        *client_address))
+                    print('Accepted new connection from {}:{}'.format(*client_address))
 
                     return user['data']
 
@@ -72,8 +67,7 @@ class EasySocketServer:
                     message = self.receive_message(notified_socket)
 
                     if message is False:
-                        print('Closed connection from: {}:{}'.format(
-                            *self.clients[notified_socket]))
+                        print('Closed connection from: {}:{}'.format(*self.clients[notified_socket]))
                         self.sockets_list.remove(notified_socket)
                         del self.clients[notified_socket]
                         continue
@@ -92,33 +86,18 @@ class EasySocketServer:
 
     def send(self, mensg):
         message = pickle.dumps(mensg)
-        message_header = f"{len(message):<{self.HEADER_LENGTH}}".encode(
-            'utf-8')
+        message_header = f"{len(message):<{self.HEADER_LENGTH}}".encode('utf-8')
         self.actualClient.send(message_header + message)
 
 
-def getTickets(tickets, ida, volta, aeroporto):
-    rListIda = []
-    rListVolta = []
-    for t in tickets:
-        if(t['paraAeroporto'] == aeroporto and t['diaIda'] == ida):
-            rListIda.append(t)
-        elif(t['deAeroporto'] == aeroporto and t['diaIda'] == volta):
-            rListVolta.append(t)
-    return {'ida': rListIda, 'volta': rListVolta}
+# async def mainServer():
+#     sock = EasySocketServer()
+#
+#     while True:
+#         data = await sock.listen()
+#         sock.send({'vitor': "Buenas"})
+#         print(data)
+#
+#
+# asyncio.run(mainServer())
 
-async def main():
-    sock = EasySocketServer()
-    with open('aeroportos.txt') as json_file:
-        tickets = json.load(json_file)
-    while True:
-        data = await sock.listen()
-        if(data['action'] == 'passagem'):
-            print(data)
-            sock.send(getTickets(tickets, data['data']['diaIda'], data['data']['diaVolta'], data['data']['paraAeroporto']))
-        if(data['action'] == 'reservar'):
-            print(data)
-            sock.send(data['data'])
-
-
-asyncio.run(main())

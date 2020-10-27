@@ -1,66 +1,96 @@
-from flask import Flask 
+from flask import Flask, redirect, url_for
 from flask import render_template
 from flask import request
-import json 
-from client import main
-from server import mainServer
+
+from sockets.client import EasySocketClient
 
 app = Flask(__name__)
 
-aeroporto={}
+aeroporto = {}
 
-@app.route('/') #home.html
+client = EasySocketClient()
 
+
+@app.route('/', methods=['POST', 'GET'])  # home.html
 def index():
+    if request.method == 'POST':
+        aero = request.form['aeroporto']
+        data_ida = request.form['dataida']
+        data_volta = request.form['datavolta']
+        passagens = request.form['npassagens']
+
+        data = {
+            "paraAeroporto": aero,
+            "dataIda": data_ida,
+            "dataVolta": data_volta,
+            "numeroPassagens": passagens
+        }
+
+        data = client.send({'action': 'passagem', **data})
+
+        print(f"Resposta {data}")
+
+        return redirect(url_for('hotel'))
+
     return render_template('index.html')
 
 
-@app.route('/', methods=['POST'])
-
-def getdata():
-    aeroporto = request.form['aeroporto']
-    dataida = request.form['dataida']
-    datavolta = request.form['datavolta']
-    passagens = request.form['npassagens']
-    cidades = request.form['cidades']
-    dataidahotel = request.form['dataidahotel']
-    datavoltahotel = request.form['datavoltahotel']
-    npessoas = request.form['npessoas']
-    cidadePasseio = request.form['cidadePasseio']
-    dataidaPasseio = request.form['dataidaPasseio']
-
-    aeroporto = {
-        "aeroporto":aeroporto,
-        "dataIda": dataida,
-        "dataVolta":datavolta,
-        "numeroPassagens":passagens
-    }
-
-   
-
-    hotel = {
-        "cidade":cidades,
-        "dataIda":dataidahotel,
-        "dataVolta":datavoltahotel,
-        "numeroPessoas":npessoas
-    }
-    
-
-    passeio = {
-        "cidade":cidadePasseio,
-        "dataIda":dataidaPasseio
-    }
-   
-    print(aeroporto)
-    print(hotel)
-    print(passeio)
+@app.route('/aero')
+def showAero():
+    return render_template('showAeros.html')
 
 
-    return "Enviado com sucesso!!"
+@app.route('/hotel', methods=['POST', 'GET'])
+def selectHotel():
+    if request.method == 'POST':
+        cidades = request.form['cidades']
+        dataidahotel = request.form['dataidahotel']
+        datavoltahotel = request.form['datavoltahotel']
+        npessoas = request.form['npessoas']
+
+        data = {
+            "cidade": cidades,
+            "numeeroDePessoas": npessoas,
+            "dataIda": dataidahotel,
+            "dataVolta": datavoltahotel,
+        }
+
+        data = client.send({**data})
+
+        print(f"Resposta {data}")
+
+        return redirect(url_for('passeio'))
+    return render_template('hotel.html')
+
+
+@app.route('/showHotel')
+def showHoteis():
+    return render_template('showAeros.html')
+
+
+@app.route('/passeio', methods=['POST', 'GET'])
+def selectPasseio():
+    if request.method == 'POST':
+        cidadePasseio = request.form['cidadePasseio']
+        dataidaPasseio = request.form['dataidaPasseio']
+
+        data = {
+            "cidade": cidadePasseio,
+            "dataIda": dataidaPasseio
+        }
+
+        data = client.send({**data})
+
+        print(f"Resposta {data}")
+
+        return redirect(url_for(''))
+    return render_template('passeio.html')
+
+
+@app.route('/showPasseio')
+def showHoteis():
+    return render_template('showAeros.html')
 
 
 if __name__ == "__main__":
-    app.run()    
-
-main(aeroporto)
-mainServer()
+    app.run()
