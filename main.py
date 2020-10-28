@@ -8,7 +8,9 @@ app = Flask(__name__)
 
 aeroporto = {}
 
-client = EasySocketClient()
+serverAero = EasySocketClient(5050)
+# serverHotel = EasySocketClient(5051)
+# serverPasseio = EasySocketClient(5052)
 
 
 @app.route('/', methods=['POST', 'GET'])  # home.html
@@ -26,18 +28,18 @@ def index():
             "numeroPassagens": passagens
         }
 
-        data = client.send({'action': 'passagem', **data})
+        data = serverAero.send({'action': 'passagem', **data})
 
         print(f"Resposta {data}")
 
-        return redirect(url_for('selectHotel'))
+        return redirect(url_for('showAero'))
 
     return render_template('index.html')
 
 
 @app.route('/aero')
 def showAero():
-    return render_template('showAeros.html')
+    return render_template('showAero.html')
 
 
 @app.route('/hotel', methods=['POST', 'GET'])
@@ -55,7 +57,7 @@ def selectHotel():
             "dataVolta": datavoltahotel,
         }
 
-        data = client.send({**data})
+        # data = serverHotel.send({**data})
 
         print(f"Resposta {data}")
 
@@ -79,7 +81,7 @@ def selectPasseio():
             "dataIda": dataidaPasseio
         }
 
-        data = client.send({**data})
+        # data = serverPasseio.send({**data})
 
         print(f"Resposta {data}")
 

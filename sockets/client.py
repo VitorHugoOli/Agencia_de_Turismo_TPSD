@@ -1,22 +1,25 @@
 import asyncio
+import errno
 import pickle
 import socket
 import sys
-
-import errno
 
 
 class EasySocketClient:
     HEADER_LENGTH = 10
 
     IP = "127.0.0.1"
-    PORT = 5050
+    PORT = None
+    client_socket = None
 
-    client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    def __init__(self, port, ip="127.0.0.1"):
+        self.IP = ip
+        self.PORT = port
+        self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-    client_socket.connect((IP, PORT))
+        self.client_socket.connect((self.IP, self.PORT))
 
-    client_socket.setblocking(False)
+        self.client_socket.setblocking(False)
 
     def send(self, data):
         body = pickle.dumps(data)
@@ -43,13 +46,14 @@ class EasySocketClient:
         self.client_socket.close()
 
 
-# async def main(aeroporto):
-#     client = EasySocketClient()
-#
+# async def main():
+#     client = EasySocketClient(5050)
+#     send = "First"
 #     while True:
-#         data = await client.send({'action': 'passagem', 'data': {aeroporto}})
+#         data = await client.send(send)
 #         print(data)
+#         send = input("> ")
 #     # client.close()
-
-
-# asyncio.run(main)
+#
+#
+# asyncio.run(main())

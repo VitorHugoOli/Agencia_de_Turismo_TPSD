@@ -23,7 +23,7 @@ def getTickets(tickets, ida, volta, aeroporto):
 
 
 async def main():
-    sock = EasySocketServer()
+    sock = EasySocketServer(5050)
     with open('aeroportos.json') as json_file:
         tickets = json.load(json_file)
     while True:

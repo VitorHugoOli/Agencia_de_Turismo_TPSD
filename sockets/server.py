@@ -7,14 +7,16 @@ import socket
 class EasySocketServer:
     HEADER_LENGTH = 10
 
-    IP = "127.0.0.1"
-    PORT = 5050
+    IP = '0.0.0.0'
+    PORT = None
     SERVER_SOCKET = None
     sockets_list = []
     clients = {}
     actualClient = None
 
-    def __init__(self):
+    def __init__(self, port):
+        self.PORT = port
+
         self.SERVER_SOCKET = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
         self.SERVER_SOCKET.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -25,7 +27,7 @@ class EasySocketServer:
 
         self.sockets_list = [self.SERVER_SOCKET]
 
-    print(f'Listening for connections on {IP}:{PORT}...')
+        print(f'Listening for connections on {self.IP}:{self.PORT}...')
 
     def receive_message(self, client_socket):
         try:
@@ -46,8 +48,8 @@ class EasySocketServer:
         while True:
             read_sockets, _, exception_sockets = select.select(self.sockets_list, [], self.sockets_list)
 
+            print("Alguem tentou")
             for notified_socket in read_sockets:
-
                 if notified_socket == self.SERVER_SOCKET:
                     client_socket, client_address = self.SERVER_SOCKET.accept()
 
@@ -77,7 +79,7 @@ class EasySocketServer:
                     print('Received message from {}:{}'.format(*user))
                     self.actualClient = notified_socket
 
-                    return message['data'], notified_socket
+                    return message['data']
 
             for notified_socket in exception_sockets:
                 self.sockets_list.remove(notified_socket)
@@ -91,13 +93,13 @@ class EasySocketServer:
 
 
 # async def mainServer():
-#     sock = EasySocketServer()
+#     sock = EasySocketServer(5050)
 #
 #     while True:
 #         data = await sock.listen()
-#         sock.send({'vitor': "Buenas"})
 #         print(data)
+#         send = input("> ")
+#         sock.send(send)
 #
 #
 # asyncio.run(mainServer())
-
