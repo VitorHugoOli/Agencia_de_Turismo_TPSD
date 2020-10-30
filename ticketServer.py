@@ -22,8 +22,7 @@ def getTickets(tickets, ida, volta, aeroporto):
     return {'ida': rListIda, 'volta': rListVolta}
 
 
-
-async def handleData(data, sock):
+async def handleData(data, sock,tickets):
     print(f"Recive data {data}")
     try:
         if data['action'] == 'passagem':
@@ -34,14 +33,14 @@ async def handleData(data, sock):
         print(ex)
         sock.send(False)
 
+
 async def main():
     sock = EasySocketServer(5050)
-    with open('tickets/aeroportos.json') as json_file:
+    with open('aeroportos.json') as json_file:
         tickets = json.load(json_file)
     while True:
         data = await sock.listen()
-        asyncio.run(handleData(data, sock))
-        
+        await handleData(data, sock,tickets)
 
 
 asyncio.run(main())
