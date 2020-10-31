@@ -5,22 +5,16 @@ from sockets.client import EasySocketClient
 app = Flask(__name__)
 # aeroporto
 aeroporto = {}
-
-dados = []
-
 dados_aero = {}
 
 # hotel
+
 hotel = {}
-diaEntrada = []
-numero = []
-qtdQuartos = []
-qtdCamas = []
-valor = []
-nome = []
-endereco = []
-cidade = []
-cafeDaManha = []
+dados_hotel = {}
+
+
+passeio = {}
+dados_passeio = {}
 
 serverAero = EasySocketClient(5050)
 serverHotel = EasySocketClient(5051)
@@ -45,6 +39,8 @@ def index():
         }
 
         aeroporto = serverAero.send({'action': 'passagem', **data})
+
+        print(f"AEROPORTO {aeroporto}")
 
         dados_aero['aero_ida'] = aeroporto['ida']
         dados_aero['aero_volta'] = aeroporto['volta']
@@ -71,14 +67,16 @@ def selectHotel():
 
         data = {
             "cidade": cidades,
-            "numeeroDePessoas": npessoas,
+            "numeroDePessoas": npessoas,
             "dataIda": dataidahotel,
             "dataVolta": datavoltahotel,
         }
 
         hotel = serverHotel.send({'action': 'hospedar', **data})
 
-        print(f"Resposta {data}")
+        dados_hotel['hosp'] = hotel['hospedagens']
+
+        print(f"HOTEL {dados_hotel['hosp']}")
 
         return redirect('/showHotel')
     return render_template('hotel.html')
@@ -87,10 +85,8 @@ def selectHotel():
 @app.route('/showHotel')
 def showHoteis():
     if request.method == 'POST':
-        return redirect('/passeio')
-    return render_template('showHotel.html', len=len(hotel), diaEntrada=diaEntrada, numero=numero,
-                           qtdQuartos=qtdQuartos, qtdCamas=qtdCamas, valor=valor, nome=nome, endereco=endereco,
-                           cidade=cidade, cafeDaManha=cafeDaManha)
+        return redirect('/passeio')  
+    return render_template('showHotel.html', hosp=dados_hotel['hosp'])
 
 
 @app.route('/passeio', methods=['POST', 'GET'])

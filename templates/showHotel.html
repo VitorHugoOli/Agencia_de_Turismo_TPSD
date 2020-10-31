@@ -23,21 +23,26 @@
                     </div>
                 </div>
             </div>
-            <form id="formulariopasseio" name="search" action="." method="GET">
+            <form id="formhotel" name="search" method="POST">
                 <div class="container">
                     <div class="row align-items-center">
 
-                        
+                     
                         <div class="col-md-12">
-                            <!--<select name="cidade" class="selecionar" id="cidade">
-                            {%for i in range(0, len)%} 
-                                <option class="selecionar">
-                                    Entrada: {{diaEntrada[i]}} N Quarto: {{numero[i]}} Qtd Quartos: {{qtdQuartos[i]}} Camas: {{qtdCamas[i]}} Valor: {{valor[i]}} Nome: {{nome[i]}} Endereco: {{endereco[i]}} Cidade: {{cidade[i]}} Cafe da Manha: {{cafeDaManha[i]}}
-                                 </option>
-                            {%endfor%} 
-                            </select>-->
+                            <h3>Dias disponiveis: </h3>
+                            <select name="tudo" class="selecionar" id="ida">
+                                {% for i in hosp %}
+                                    <option class="selecionar">
+                                        Entrada: {{ i['diaEntrada'] }}  N Quarto: {{ i['numero'] }}
+                                        Qtd Quartos: {{ i['qtdQuartos'] }}
+                                        Camas: {{ i['qtdCamas'] }} Valor: {{ i['valor'] }}
+                                        Nome: {{ i['nome'] }}
+                                        Endereco: {{i['endereco']}} Cidade: {{i['cidade']}} Cafe da Manha: {{i['cafeDaManha']}}
+                                    </option>
+                                {% endfor %}
+                            </select>
                         </div>
-
+                        
                     </div>
                     
                     <div class="col text-center">
