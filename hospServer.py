@@ -21,7 +21,7 @@ async def handleData(data, sock, hosps):
     print(f"Recive data {data}")
     try:
         if data['action'] == 'hospedar':
-            sock.send(getHosps(hosps, data['diaIda'], data['cidade'], data['numeroDePessoas']))
+            sock.send(getHosps(hosps, data['dataIda'], data['cidade'], data['numeroDePessoas']))
         if data['action'] == 'reservar':
             sock.send(data)
     except Exception as ex:
