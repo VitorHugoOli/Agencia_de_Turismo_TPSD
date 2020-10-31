@@ -73,7 +73,7 @@ def selectHotel():
         }
 
         hotel = serverHotel.send({'action': 'hospedar', **data})
-
+        print(hotel)
         dados_hotel['hosp'] = hotel['hospedagens']
 
         print(f"HOTEL {dados_hotel['hosp']}")
@@ -82,7 +82,7 @@ def selectHotel():
     return render_template('hotel.html')
 
 
-@app.route('/showHotel')
+@app.route('/showHotel', methods=['POST', 'GET'])
 def showHoteis():
     if request.method == 'POST':
         return redirect('/passeio')  
