@@ -1,7 +1,12 @@
-import asyncio
 import pickle
 import select
 import socket
+
+severs = {
+    5050: 'Voos',
+    5051: 'Hoteis',
+    5052: 'Psseios'
+}
 
 
 class EasySocketServer:
@@ -48,7 +53,7 @@ class EasySocketServer:
         while True:
             read_sockets, _, exception_sockets = select.select(self.sockets_list, [], self.sockets_list)
 
-            print("Alguem tentou")
+            print(f"New connection in {severs[self.PORT]}")
             for notified_socket in read_sockets:
                 if notified_socket == self.SERVER_SOCKET:
                     client_socket, client_address = self.SERVER_SOCKET.accept()
@@ -90,7 +95,6 @@ class EasySocketServer:
         message = pickle.dumps(mensg)
         message_header = f"{len(message):<{self.HEADER_LENGTH}}".encode('utf-8')
         self.actualClient.send(message_header + message)
-
 
 # async def mainServer():
 #     sock = EasySocketServer(5050)
