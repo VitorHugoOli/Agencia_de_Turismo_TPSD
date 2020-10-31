@@ -1,30 +1,16 @@
-from flask import Flask, redirect, url_for
-from flask import render_template
-from flask import request
+from flask import Flask, request, redirect, url_for, render_template
 
 from sockets.client import EasySocketClient
 
 app = Flask(__name__)
-#aeroporto
+# aeroporto
 aeroporto = {}
 
 dados = []
 
-horarioIda = []
+dados_aero = {}
 
-chegadaIda = []
-
-valor = []
-
-diaIda = []
-
-diaChegada = []
-
-deAeroporto = []
-
-paraAeroporto = []
-
-#hotel
+# hotel
 hotel = {}
 diaEntrada = []
 numero = []
@@ -36,11 +22,10 @@ endereco = []
 cidade = []
 cafeDaManha = []
 
-
-
-
-#serverAero = EasySocketClient(5050)
+serverAero = EasySocketClient(5050)
 serverHotel = EasySocketClient(5051)
+
+
 # serverPasseio = EasySocketClient(5052)
 
 
@@ -61,27 +46,19 @@ def index():
 
         aeroporto = serverAero.send({'action': 'passagem', **data})
 
-       # print(f"Resposta {data['volta']}")
+        dados_aero['aero_ida'] = aeroporto['ida']
+        dados_aero['aero_volta'] = aeroporto['volta']
 
-        dados = aeroporto['volta']
-
-        for i in dados:
-            horarioIda.append(i['horarioIda'])
-            chegadaIda.append(i['chegadaIda'])
-            valor.append(i['valor'])       
-            diaIda.append(i['diaIda'])
-            diaChegada.append(i['diaChegada'])
-            deAeroporto.append(i['deAeroporto'])
-            paraAeroporto.append(i['paraAeroporto'])
-
-        return redirect(url_for('showAero'))
+        return redirect('/aero')
 
     return render_template('index.html')
 
 
-@app.route('/aero')
+@app.route('/aero', methods=['POST', 'GET'])
 def showAero():
-    return render_template('showAero.html', len=len(horarioIda),horarioIda = horarioIda,chegadaIda = chegadaIda, valor=valor, diaIda = diaIda, diaChegada = diaChegada, deAeroporto = deAeroporto, paraAeroporto = paraAeroporto)
+    if request.method == 'POST':
+        return redirect('/hotel')
+    return render_template('showAero.html', aero_ida=dados_aero['aero_ida'], aero_volta=dados_aero['aero_volta'])
 
 
 @app.route('/hotel', methods=['POST', 'GET'])
@@ -99,17 +76,21 @@ def selectHotel():
             "dataVolta": datavoltahotel,
         }
 
-        hotel = serverHotel.send({'action':'hospedar',**data})
+        hotel = serverHotel.send({'action': 'hospedar', **data})
 
         print(f"Resposta {data}")
 
-        return redirect(url_for('showHotel'))
+        return redirect('/showHotel')
     return render_template('hotel.html')
 
 
 @app.route('/showHotel')
 def showHoteis():
-    return render_template('showHotel.html',len=len(hotel),diaEntrada=diaEntrada, numero=numero,qtdQuartos=qtdQuartos,qtdCamas=qtdCamas,valor=valor,nome=nome,endereco=endereco,cidade=cidade,cafeDaManha=cafeDaManha)
+    if request.method == 'POST':
+        return redirect('/passeio')
+    return render_template('showHotel.html', len=len(hotel), diaEntrada=diaEntrada, numero=numero,
+                           qtdQuartos=qtdQuartos, qtdCamas=qtdCamas, valor=valor, nome=nome, endereco=endereco,
+                           cidade=cidade, cafeDaManha=cafeDaManha)
 
 
 @app.route('/passeio', methods=['POST', 'GET'])
@@ -127,7 +108,7 @@ def selectPasseio():
 
         print(f"Resposta {data}")
 
-        return redirect(url_for('showPasseio'))
+        return redirect('/showPasseio')
     return render_template('passeio.html')
 
 

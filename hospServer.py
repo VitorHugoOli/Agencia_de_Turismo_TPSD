@@ -8,7 +8,7 @@ from sockets.server import EasySocketServer
 def getHosps(hosps, ida, cidade, pessoas):
     rListHosp = []
     for h in hosps:
-        if (h['cidade'] == cidade):
+        if h['cidade'] == cidade:
             if ((datetime.datetime.strptime(h['diaEntrada'], "%d/%m/%Y") == datetime.datetime.strptime(ida,
                                                                                                        '%Y-%m-%d')) & (
                     h['qtdCamas'] >= pessoas)):
@@ -17,7 +17,7 @@ def getHosps(hosps, ida, cidade, pessoas):
     return {'hospedagens': rListHosp}
 
 
-async def handleData(data, sock,hosps):
+async def handleData(data, sock, hosps):
     print(f"Recive data {data}")
     try:
         if data['action'] == 'hospedar':
@@ -30,12 +30,12 @@ async def handleData(data, sock,hosps):
 
 
 async def main():
-    sock = EasySocketServer(5050)
+    sock = EasySocketServer(5051)
     with open('tickets/hospedagens.json') as json_file:
         hosps = json.load(json_file)
     while True:
         data = await sock.listen()
-        await handleData(data, sock,hosps)
+        await handleData(data, sock, hosps)
 
 
 asyncio.run(main())

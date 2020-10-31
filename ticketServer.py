@@ -36,7 +36,7 @@ async def handleData(data, sock,tickets):
 
 async def main():
     sock = EasySocketServer(5050)
-    with open('tickets/aeroportos.json') as json_file:
+    with open('aeroportos.json') as json_file:
         tickets = json.load(json_file)
     while True:
         data = await sock.listen()
