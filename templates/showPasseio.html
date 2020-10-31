@@ -28,14 +28,42 @@
                     <div class="row align-items-center">
 
                         
-                        <div class="col-md-12">
-                            <!--<select name="cidade" class="selecionar" id="cidade">
+                      <!--   <div class="col-md-12">
+                           <select name="cidade" class="selecionar" id="cidade">
                             {%for i in range(0, len)%} 
                                 <option class="selecionar">
                                     Ida: {{horarioIda[i]}} Chegada: {{chegadaIda[i]}} Preço: {{valor[i]}} Ida: {{diaIda[i]}} Chegada: {{diaChegada[i]}} Saída: {{deAeroporto[i]}} Chegada: {{paraAeroporto[i]}}
                                  </option>
                             {%endfor%} 
-                            </select>-->
+                            </select>
+                        </div>-->
+                        <div class="col-md-12">
+                            <h3>Ida: </h3>
+                            <select name="tudo" class="selecionar" id="ida">
+                                {% for i in aero_ida %}
+                                    <option class="selecionar">
+                                        Ida: {{ i['horarioIda'] }} Chegada: {{ i['chegadaIda'] }}
+                                        Preço: {{ i['valor'] }}
+                                        Dia: {{ i['diaIda'] }}
+                                        Chegada: {{ i['diaChegada'] }} Saída: {{ i['deAeroporto'] }}
+                                        Chegada: {{ i['paraAeroporto'] }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-12">
+                            <h3>Volta: </h3>
+                            <select name="tudo" class="selecionar" id="volta">
+                                {% for i in aero_volta %}
+                                    <option class="selecionar">
+                                        Horario: {{ i['horarioIda'] }} Chegada: {{ i['chegadaIda'] }}
+                                        Preço: {{ i['valor'] }}
+                                        Dia: {{ i['diaIda'] }}
+                                        Chegada: {{ i['diaChegada'] }} Saída: {{ i['deAeroporto'] }}
+                                        Chegada: {{ i['paraAeroporto'] }}
+                                    </option>
+                                {% endfor %}
+                            </select>
                         </div>
 
                     </div>
