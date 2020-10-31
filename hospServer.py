@@ -15,7 +15,7 @@ def getHosps(hosps, ida, cidade, pessoas):
 
 
 
-async def handleData(data, sock):
+async def handleData(data, sock,hosps):
     print(f"Recive data {data}")
     try:
         if data['action'] == 'hospedar':
@@ -27,12 +27,12 @@ async def handleData(data, sock):
         sock.send(False)
 
 async def main():
-    sock = EasySocketServer(5050)
-    with open('tickets/hospedagens.json') as json_file:
+    sock = EasySocketServer(5051)
+    with open('hospedagens.json') as json_file:
         hosps = json.load(json_file)
     while True:
         data = await sock.listen()
-        asyncio.run(handleData(data, sock))
+        await handleData(data, sock,hosps)
         
 
 
