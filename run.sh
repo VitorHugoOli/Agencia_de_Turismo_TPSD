@@ -15,6 +15,7 @@ if [ ! -f tickets/passeios.json ] || [ ! -f tickets/aeroportos.json ] || [ ! -f 
 fi
 
 source venv/bin/activate
+pip3 install flask
 python3.7 ticketServer.py &
 python3.7 hospServer.py &
 python3 main.py
