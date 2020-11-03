@@ -12,7 +12,7 @@ def getPasseio(passeio, ida, cidade):
         if p['cidade'] in cidade or p['endereco'] in cidade:
             if datetime.datetime.strptime(p['dia'], "%d/%m/%Y") == datetime.datetime.strptime(ida, '%Y-%m-%d'):
                 rListPass.append(p)
-    return {'hospedagens': rListPass}
+    return {'passeio': rListPass}
 
 
 async def handleData(data, sock, passeio):

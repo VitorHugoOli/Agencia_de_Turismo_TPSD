@@ -99,17 +99,19 @@ def selectPasseio():
             "dataIda": dataidaPasseio
         }
 
-        data = serverPasseio.send({**data})
+        passeio = serverPasseio.send({**data})
+
+        dados_passeio['passeio'] = passeio['passeio']
 
         print(f"Resposta {data}")
 
-        # return redirect('/showPasseio')
+        return redirect('/showPasseio')
     return render_template('passeio.html')
 
 
 @app.route('/showPasseio')
 def showPasseio():
-    return render_template('showPasseio.html')
+    return render_template('showPasseio.html',passeio=dados_passeio['passeio'])
 
 
 if __name__ == "__main__":
