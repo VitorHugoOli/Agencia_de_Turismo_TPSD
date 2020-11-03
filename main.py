@@ -18,9 +18,7 @@ dados_passeio = {}
 
 serverAero = EasySocketClient(5050)
 serverHotel = EasySocketClient(5051)
-
-
-# serverPasseio = EasySocketClient(5052)
+serverPasseio = EasySocketClient(5052)
 
 
 @app.route('/', methods=['POST', 'GET'])  # home.html
@@ -92,7 +90,8 @@ def showHoteis():
 @app.route('/passeio', methods=['POST', 'GET'])
 def selectPasseio():
     if request.method == 'POST':
-        cidadePasseio = request.form['cidadePasseio']
+        print(request.form)
+        cidadePasseio = request.form['cidade']
         dataidaPasseio = request.form['dataidaPasseio']
 
         data = {
@@ -100,11 +99,11 @@ def selectPasseio():
             "dataIda": dataidaPasseio
         }
 
-        # data = serverPasseio.send({**data})
+        data = serverPasseio.send({**data})
 
         print(f"Resposta {data}")
 
-        return redirect('/showPasseio')
+        # return redirect('/showPasseio')
     return render_template('passeio.html')
 
 
@@ -114,4 +113,4 @@ def showPasseio():
 
 
 if __name__ == "__main__":
-    app.run()
+    app.run(host='0.0.0.0')

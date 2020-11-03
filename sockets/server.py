@@ -5,7 +5,7 @@ import socket
 severs = {
     5050: 'Voos',
     5051: 'Hoteis',
-    5052: 'Psseios'
+    5052: 'Passeios'
 }
 
 
