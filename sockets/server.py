@@ -67,9 +67,7 @@ class EasySocketServer:
                     self.sockets_list.append(client_socket)
                     self.clients[client_socket] = client_address
                     self.actualClient = client_socket
-                    print('Accepted new connection from {}:{}'.format(*client_address))
-
-                    return f"Welcome to {severs[self.PORT]}"
+                    print('Welcome {}:{}'.format(*client_address))
 
                 else:
                     message = self.receive_message(notified_socket)
