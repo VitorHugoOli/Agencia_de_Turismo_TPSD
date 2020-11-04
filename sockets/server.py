@@ -53,8 +53,6 @@ class EasySocketServer:
         while True:
             read_sockets, _, exception_sockets = select.select(self.sockets_list, [], self.sockets_list)
 
-            print(f"New connection in {severs[self.PORT]}")
-
             for notified_socket in read_sockets:
                 if notified_socket == self.SERVER_SOCKET:
                     client_socket, client_address = self.SERVER_SOCKET.accept()
@@ -67,8 +65,8 @@ class EasySocketServer:
                     self.sockets_list.append(client_socket)
                     self.clients[client_socket] = client_address
                     self.actualClient = client_socket
+                    print(f"New connection in {severs[self.PORT]}")
                     print('Welcome {}:{}'.format(*client_address))
-
                 else:
                     message = self.receive_message(notified_socket)
 
@@ -81,6 +79,7 @@ class EasySocketServer:
                     user = self.clients[notified_socket]
 
                     print('Received message from {}:{}'.format(*user))
+
                     self.actualClient = notified_socket
 
                     return message['data']
