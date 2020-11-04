@@ -1,6 +1,6 @@
 import getopt
 import sys
-import timeit
+import time
 
 import werkzeug
 from flask import Flask, request, redirect, render_template
@@ -40,10 +40,10 @@ def index():
             "numeroPassagens": passagens
         }
 
-        start = timeit.timeit()
+        start = time.time()
         aeroporto = serverAero.send({'action': 'passagem', **data})
-        end = timeit.timeit()
-        print(f"Tempo Server Aero: {end - start}")
+        end = time.time()
+        print(f"Tempo Server Aero: {end - start}s")
         dados_aero['aero_ida'] = aeroporto['ida']
         dados_aero['aero_volta'] = aeroporto['volta']
 
@@ -74,10 +74,10 @@ def selectHotel():
             "dataVolta": datavoltahotel,
         }
 
-        start = timeit.timeit()
+        start = time.time()
         hotel = serverHotel.send({'action': 'hospedar', **data})
-        end = timeit.timeit()
-        print(f"Tempo Server Hotel: {end - start}")
+        end = time.time()
+        print(f"Tempo Server Hotel: {end - start}s")
 
         dados_hotel['hosp'] = hotel['hospedagens']
 
@@ -104,10 +104,10 @@ def selectPasseio():
             "dataIda": dataidaPasseio
         }
 
-        start = timeit.timeit()
+        start = time.time()
         passeio = serverPasseio.send({**data})
-        end = timeit.timeit()
-        print(f"Tempo Server Passeio: {end - start}")
+        end = time.time()
+        print(f"Tempo Server Passeio: {end - start}s")
 
         dados_passeio['passeio'] = passeio['passeio']
 
