@@ -9,6 +9,11 @@
     <h1>You shouldn't be here</h1>
     <iframe src="https://giphy.com/embed/EHKRUd3NpbHFe" width="480" height="480" frameBorder="0" class="giphy-embed"
             allowFullScreen></iframe>
+    <p>
+        {% if error == 500 %}
+            Volte e confira se os campos estão corretos e preenchidos.
+        {% endif %}
+    </p>
 </div>
 </body>
 </html>

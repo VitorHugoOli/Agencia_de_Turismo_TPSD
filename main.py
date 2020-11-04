@@ -1,6 +1,7 @@
 import getopt
 import sys
 
+import werkzeug
 from flask import Flask, request, redirect, render_template
 
 from sockets.client import EasySocketClient
@@ -108,6 +109,15 @@ def selectPasseio():
 @app.route('/showPasseio')
 def showPasseio():
     return render_template('showPasseio.html', passeio=dados_passeio['passeio'])
+
+
+@app.errorhandler(werkzeug.exceptions.BadRequest)
+def handle_bad_request(e):
+    return render_template('Block.html', error=500)
+
+
+# or, without the decorator
+app.register_error_handler(500, handle_bad_request)
 
 
 def main(argv):
