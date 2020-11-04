@@ -1,4 +1,7 @@
-from flask import Flask, request, redirect, url_for, render_template
+import getopt
+import sys
+
+from flask import Flask, request, redirect, render_template
 
 from sockets.client import EasySocketClient
 
@@ -11,7 +14,6 @@ dados_aero = {}
 
 hotel = {}
 dados_hotel = {}
-
 
 passeio = {}
 dados_passeio = {}
@@ -37,8 +39,6 @@ def index():
         }
 
         aeroporto = serverAero.send({'action': 'passagem', **data})
-
-        print(f"AEROPORTO {aeroporto}")
 
         dados_aero['aero_ida'] = aeroporto['ida']
         dados_aero['aero_volta'] = aeroporto['volta']
@@ -74,8 +74,6 @@ def selectHotel():
         print(hotel)
         dados_hotel['hosp'] = hotel['hospedagens']
 
-        print(f"HOTEL {dados_hotel['hosp']}")
-
         return redirect('/showHotel')
     return render_template('hotel.html')
 
@@ -83,7 +81,7 @@ def selectHotel():
 @app.route('/showHotel', methods=['POST', 'GET'])
 def showHoteis():
     if request.method == 'POST':
-        return redirect('/passeio')  
+        return redirect('/passeio')
     return render_template('showHotel.html', hosp=dados_hotel['hosp'])
 
 
@@ -103,16 +101,23 @@ def selectPasseio():
 
         dados_passeio['passeio'] = passeio['passeio']
 
-        print(f"Resposta {data}")
-
         return redirect('/showPasseio')
     return render_template('passeio.html')
 
 
 @app.route('/showPasseio')
 def showPasseio():
-    return render_template('showPasseio.html',passeio=dados_passeio['passeio'])
+    return render_template('showPasseio.html', passeio=dados_passeio['passeio'])
+
+
+def main(argv):
+    try:
+        opts, args = getopt.getopt(argv, "p", ["port="])
+    except getopt.GetoptError:
+        print('Entre com alguma porta!!!')
+        sys.exit(2)
+    app.run(host='0.0.0.0', port=args[0])
 
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0')
+    main(sys.argv[1:])

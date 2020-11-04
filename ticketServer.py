@@ -23,7 +23,6 @@ def getTickets(tickets, ida, volta, aeroporto):
 
 
 async def handleData(data, sock,tickets):
-    print(f"Recive data {data}")
     try:
         if data['action'] == 'passagem':
             sock.send(getTickets(tickets, data['dataIda'], data['dataVolta'], data['paraAeroporto']))

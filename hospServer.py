@@ -18,7 +18,6 @@ def getHosps(hosps, ida, cidade, pessoas):
 
 
 async def handleData(data, sock, hosps):
-    print(f"Recive data {data}")
     try:
         if data['action'] == 'hospedar':
             sock.send(getHosps(hosps, data['dataIda'], data['cidade'], int(data['numeroDePessoas'])))

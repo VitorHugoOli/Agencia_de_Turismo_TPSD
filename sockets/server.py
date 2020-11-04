@@ -54,6 +54,7 @@ class EasySocketServer:
             read_sockets, _, exception_sockets = select.select(self.sockets_list, [], self.sockets_list)
 
             print(f"New connection in {severs[self.PORT]}")
+
             for notified_socket in read_sockets:
                 if notified_socket == self.SERVER_SOCKET:
                     client_socket, client_address = self.SERVER_SOCKET.accept()

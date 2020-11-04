@@ -16,7 +16,6 @@ def getPasseio(passeio, ida, cidade):
 
 
 async def handleData(data, sock, passeio):
-    print(f"Recive data {data}")
     try:
         sock.send(getPasseio(passeio, data['dataIda'], data['cidade']))
     except Exception as ex:
