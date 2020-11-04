@@ -32,6 +32,7 @@ async def main():
     sock = EasySocketServer(5051)
     with open('tickets/hospedagens.json') as json_file:
         hosps = json.load(json_file)
+    await sock.listen()
     while True:
         data = await sock.listen()
         await handleData(data, sock, hosps)

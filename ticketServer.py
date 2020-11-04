@@ -1,6 +1,7 @@
 import asyncio
 import datetime
 import json
+
 from sockets.server import EasySocketServer
 
 
@@ -22,7 +23,7 @@ def getTickets(tickets, ida, volta, aeroporto):
     return {'ida': rListIda, 'volta': rListVolta}
 
 
-async def handleData(data, sock,tickets):
+async def handleData(data, sock, tickets):
     try:
         if data['action'] == 'passagem':
             sock.send(getTickets(tickets, data['dataIda'], data['dataVolta'], data['paraAeroporto']))
@@ -37,9 +38,10 @@ async def main():
     sock = EasySocketServer(5050)
     with open('tickets/aeroportos.json') as json_file:
         tickets = json.load(json_file)
+    await sock.listen()
     while True:
         data = await sock.listen()
-        await handleData(data, sock,tickets)
+        await handleData(data, sock, tickets)
 
 
 asyncio.run(main())

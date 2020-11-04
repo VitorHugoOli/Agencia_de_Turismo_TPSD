@@ -12,14 +12,17 @@ class EasySocketClient:
     PORT = None
     client_socket = None
 
-    def __init__(self, port, ip="127.0.0.1"):
-        self.IP = ip
+    def __init__(self, port):
         self.PORT = port
         self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
         self.client_socket.connect((self.IP, self.PORT))
 
         self.client_socket.setblocking(False)
+
+        body = pickle.dumps("I'm live!")
+        body_header = f"{len(body):<{self.HEADER_LENGTH}}".encode('utf-8')
+        self.client_socket.send(body_header + body)
 
     def send(self, data):
         body = pickle.dumps(data)

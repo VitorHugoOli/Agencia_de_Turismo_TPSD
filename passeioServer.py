@@ -27,6 +27,7 @@ async def main():
     sock = EasySocketServer(5052)
     with open('tickets/passeios.json') as json_file:
         passeio = json.load(json_file)
+    await sock.listen()
     while True:
         data = await sock.listen()
         await handleData(data, sock, passeio)
